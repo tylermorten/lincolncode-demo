@@ -1,0 +1,6 @@
+FSharp.Core
+Suave
+Microsoft.DotNet.Watcher.Tools
+Newtonsoft.Json
+NPoco
+Microsoft.Data.Sqlite

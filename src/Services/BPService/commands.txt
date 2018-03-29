@@ -1,0 +1,24 @@
+kubectl config view
+
+gcloud compute disks create --size=50GB --zone=us-central1-f db-disk
+
+kubectl run -i --tty busybox --image=busybox --restart=Never
+
+docker build -t gcr.io/lincolncode-demo/bpservice:latest
+
+gcloud docker -- push gcr.io/lincolncode-demo/bpservice:latest
+
+# create deployment (replication controller)
+kubectl run bpservice --image=gcr.io/lincolncode-demo/bpservice:latest --replicas=1 --port=8080
+
+# create load balancer
+kubectl expose deployment bpservice --type=LoadBalancer --port 80 --target-port 8080
+
+# Scale it
+kubectl scale deployment bpservice --replicas=2
+
+# change it
+kubectl set image deployment/bpservice bpservice=gcr.io/lincolncode-demo/bpservice:latest
+
+# Web UI
+kubectl proxy --port 8081
